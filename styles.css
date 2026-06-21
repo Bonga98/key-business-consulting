@@ -144,15 +144,6 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.08; let
   box-shadow: 0 30px 70px rgba(0,0,0,0.55);
   border: 1px solid var(--line);
 }
-.hero__badge {
-  position: absolute; left: -22px; bottom: -22px;
-  background: var(--oak); color: #1a1206;
-  padding: 16px 22px; border-radius: var(--radius);
-  display: flex; flex-direction: column; line-height: 1.2;
-  box-shadow: 0 18px 40px rgba(0,0,0,0.4);
-}
-.hero__badge strong { font-family: var(--serif); font-size: 1.3rem; }
-.hero__badge span { font-size: 0.72rem; letter-spacing: 0.08em; opacity: 0.85; }
 
 /* ===== Services ===== */
 .services { background: var(--charcoal); }
@@ -249,6 +240,5 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.08; let
 
 @media (max-width: 480px) {
   .container { padding: 0 20px; }
-  .hero__badge { left: 0; bottom: -16px; }
   .stats { grid-template-columns: 1fr; }
 }
