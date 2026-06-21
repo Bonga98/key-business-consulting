@@ -227,6 +227,13 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.08; let
 .brand--footer .brand__text strong { font-size: 1rem; }
 .footer__tag { color: var(--oak); font-size: 0.9rem; letter-spacing: 0.06em; }
 .footer__copy { color: var(--muted); font-size: 0.82rem; }
+.footer__powered {
+  margin-top: 6px;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  color: rgba(138, 133, 123, 0.65);
+}
+.footer__powered span { color: var(--oak); font-weight: 500; }
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
