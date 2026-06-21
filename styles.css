@@ -99,6 +99,21 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.08; let
 .brand__text strong { font-family: var(--serif); font-size: 1.15rem; letter-spacing: 0.12em; }
 .brand__text small { font-size: 0.6rem; letter-spacing: 0.24em; color: var(--muted); margin-top: 4px; }
 
+.beta-tag {
+  align-self: flex-start;
+  margin-top: 2px;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--oak);
+  background: rgba(192, 138, 78, 0.12);
+  border: 1px solid rgba(192, 138, 78, 0.45);
+  border-radius: 3px;
+  padding: 2px 7px;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
 .nav__links { display: flex; align-items: center; gap: 34px; }
 .nav__links a { font-size: 0.9rem; font-weight: 500; color: var(--cream); opacity: 0.82; transition: opacity .2s, color .2s; }
 .nav__links a:hover { opacity: 1; color: var(--oak); }
