@@ -190,6 +190,41 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.08; let
 .stat strong { display: block; font-family: var(--serif); font-size: 1.9rem; color: var(--cream); margin-bottom: 8px; }
 .stat span { font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(241,237,228,0.85); }
 
+/* ===== Reviews ===== */
+.reviews { background: var(--charcoal); }
+.reviews__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.review {
+  background: var(--teal-deep);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 34px 30px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: transform .25s ease, border-color .25s ease;
+}
+.review:hover { transform: translateY(-6px); border-color: rgba(192,138,78,0.5); }
+.review__stars { color: var(--oak); font-size: 1.05rem; letter-spacing: 2px; }
+.review blockquote {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--cream);
+}
+.review figcaption { display: flex; align-items: center; gap: 14px; margin-top: auto; }
+.review__avatar {
+  width: 44px; height: 44px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: var(--oak); color: #1a1206;
+  font-weight: 600; font-size: 0.95rem;
+}
+.review__person { display: flex; flex-direction: column; line-height: 1.3; }
+.review__person strong { color: var(--cream); font-size: 0.98rem; }
+.review__person small { color: var(--muted); font-size: 0.82rem; }
+
 /* ===== Contact ===== */
 .contact { background: var(--black); }
 .contact__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
@@ -241,6 +276,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.08; let
   .hero__inner, .about__grid, .contact__grid { grid-template-columns: 1fr; gap: 44px; }
   .hero__media { order: -1; }
   .cards { grid-template-columns: 1fr; }
+  .reviews__grid { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .nav__links a:not(.nav__cta) { display: none; }
 }
