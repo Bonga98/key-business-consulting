@@ -148,43 +148,43 @@
         <p class="section__sub">A few words from business owners we keep compliant and confident.</p>
       </div>
 
-      <div class="reviews__grid">
-        <figure class="review">
-          <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>“They took our messy books and turned them into something I finally understand. Tax season went from dreaded to effortless.”</blockquote>
-          <figcaption>
-            <span class="review__avatar">TM</span>
-            <span class="review__person">
-              <strong>Thabo M.</strong>
-              <small>Owner, Retail Startup</small>
-            </span>
-          </figcaption>
-        </figure>
+      <div class="reviews__grid" id="reviewsGrid"></div>
+      <p class="reviews__empty" id="reviewsEmpty">No reviews yet — be the first to share your experience.</p>
 
-        <figure class="review">
-          <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>“Always on time, always reachable. Our CIPC and SARS filings are handled before I even think about them.”</blockquote>
-          <figcaption>
-            <span class="review__avatar">LN</span>
-            <span class="review__person">
-              <strong>Lerato N.</strong>
-              <small>Director, Logistics (Pty) Ltd</small>
-            </span>
-          </figcaption>
-        </figure>
-
-        <figure class="review">
-          <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
-          <blockquote>“Professional, patient and genuinely invested in our growth. It feels like having a finance department on call.”</blockquote>
-          <figcaption>
-            <span class="review__avatar">SK</span>
-            <span class="review__person">
-              <strong>Sipho K.</strong>
-              <small>Founder, Consulting Firm</small>
-            </span>
-          </figcaption>
-        </figure>
+      <div class="reviews__cta">
+        <button class="btn btn--ghost" id="reviewToggle" aria-expanded="false">Leave a review</button>
       </div>
+
+      <form class="review-form" id="reviewForm" hidden>
+        <div class="review-form__row">
+          <label>
+            <span>Name</span>
+            <input type="text" id="rfName" placeholder="Your name" required />
+          </label>
+          <label>
+            <span>Role / company <em>(optional)</em></span>
+            <input type="text" id="rfRole" placeholder="e.g. Owner, ABC (Pty) Ltd" />
+          </label>
+        </div>
+        <div class="review-form__rating">
+          <span>Your rating</span>
+          <div class="stars-input" id="rfStars" role="radiogroup" aria-label="Star rating">
+            <button type="button" data-v="1" aria-label="1 star">★</button>
+            <button type="button" data-v="2" aria-label="2 stars">★</button>
+            <button type="button" data-v="3" aria-label="3 stars">★</button>
+            <button type="button" data-v="4" aria-label="4 stars">★</button>
+            <button type="button" data-v="5" aria-label="5 stars">★</button>
+          </div>
+        </div>
+        <label>
+          <span>Your review</span>
+          <textarea id="rfMessage" rows="4" placeholder="Tell others about your experience..." required></textarea>
+        </label>
+        <div class="review-form__actions">
+          <button type="submit" class="btn btn--primary">Submit review</button>
+          <button type="button" class="btn btn--ghost" id="reviewCancel">Cancel</button>
+        </div>
+      </form>
     </div>
   </section>
 
@@ -247,6 +247,84 @@
     // Subtle nav shadow on scroll
     const nav = document.querySelector('.nav');
     addEventListener('scroll', () => nav.classList.toggle('nav--scrolled', scrollY > 12));
+
+    /* ===== Reviews ===== */
+    (function () {
+      const STORE_KEY = 'kbc_reviews';
+      const grid = document.getElementById('reviewsGrid');
+      const empty = document.getElementById('reviewsEmpty');
+      const form = document.getElementById('reviewForm');
+      const toggle = document.getElementById('reviewToggle');
+      const cancel = document.getElementById('reviewCancel');
+      const starsInput = document.getElementById('rfStars');
+      const nameEl = document.getElementById('rfName');
+      const roleEl = document.getElementById('rfRole');
+      const msgEl = document.getElementById('rfMessage');
+      let rating = 0;
+
+      const esc = (s) => s.replace(/[&<>"']/g, (c) => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+      ));
+      const initials = (name) => name.trim().split(/\s+/).slice(0, 2)
+        .map((w) => w[0] ? w[0].toUpperCase() : '').join('') || '?';
+      const load = () => { try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch { return []; } };
+      const save = (list) => localStorage.setItem(STORE_KEY, JSON.stringify(list));
+
+      function render() {
+        const list = load();
+        grid.innerHTML = list.map((r) => `
+          <figure class="review">
+            <div class="review__stars" aria-label="${r.rating} out of 5 stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+            <blockquote>“${esc(r.message)}”</blockquote>
+            <figcaption>
+              <span class="review__avatar">${esc(initials(r.name))}</span>
+              <span class="review__person">
+                <strong>${esc(r.name)}</strong>
+                ${r.role ? `<small>${esc(r.role)}</small>` : ''}
+              </span>
+            </figcaption>
+          </figure>`).join('');
+        empty.style.display = list.length ? 'none' : '';
+      }
+
+      function setRating(v) {
+        rating = v;
+        [...starsInput.children].forEach((b) => b.classList.toggle('on', +b.dataset.v <= v));
+      }
+      starsInput.addEventListener('click', (e) => {
+        const b = e.target.closest('button'); if (b) setRating(+b.dataset.v);
+      });
+
+      function openForm(open) {
+        form.hidden = !open;
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.style.display = open ? 'none' : '';
+        if (open) nameEl.focus();
+      }
+      toggle.addEventListener('click', () => openForm(true));
+      cancel.addEventListener('click', () => { openForm(false); resetForm(); });
+
+      function resetForm() { form.reset(); setRating(0); }
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!rating) { alert('Please choose a star rating.'); return; }
+        const list = load();
+        list.unshift({
+          name: nameEl.value.trim(),
+          role: roleEl.value.trim(),
+          rating,
+          message: msgEl.value.trim(),
+          at: Date.now()
+        });
+        save(list);
+        render();
+        resetForm();
+        openForm(false);
+      });
+
+      render();
+    })();
   </script>
 </body>
 </html>
